@@ -54,17 +54,29 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ngawa_shop.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME', default='neondb'),
-        'USER': config('DB_USER', default='neondb_owner'),
-        'PASSWORD': config('DB_PASSWORD', default='npg_YplWtR1ro8cy'),
-        'HOST': config('DB_HOST', default=''),
-        'PORT': config('DB_PORT', default='5432'),
-        'CONN_MAX_AGE': 600,
+import dj_database_url
+
+DATABASE_URL = config('DATABASE_URL', default=None)
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': config('DB_NAME', default='neondb'),
+            'USER': config('DB_USER', default='neondb_owner'),
+            'PASSWORD': config('DB_PASSWORD', default='npg_YplWtR1ro8cy'),
+            'HOST': config('DB_HOST', default=''),
+            'PORT': config('DB_PORT', default='5432'),
+            'CONN_MAX_AGE': 600,
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
