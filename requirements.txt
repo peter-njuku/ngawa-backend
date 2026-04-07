@@ -10,3 +10,5 @@ whitenoise==6.9.0
 gunicorn==23.0.0
 Pillow==11.1.0
 dj-database-url==2.3.0
+cloudinary==1.42.2
+django-cloudinary-storage==0.3.0
