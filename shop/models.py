@@ -32,7 +32,7 @@ class Product(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
-    image_url = models.URLField(blank=True, null=True, help_text="Vercel Blob URL for product image")
+    image = models.ImageField(upload_to="products/", blank=True, null=True)
     in_stock = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
