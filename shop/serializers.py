@@ -3,7 +3,7 @@ from .models import Category, Product
 from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField(write_only=True, required=False)
+    full_name = serializers.SerializerMethodField()
     password = serializers.SerializerMethodField()
     class Meta:
         model = User
