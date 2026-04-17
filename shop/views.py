@@ -17,9 +17,9 @@ class AdminLoginView(APIView):
         user = authenticate(request, username=username, password=password)
         if user is not None and user.is_staff:
             login(request, user)
-            return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
+            return Response({'message': '[Info] Login successful'}, status=status.HTTP_200_OK)
         else:
-            return Response({'error': 'Invalid credentials or not an admin'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'error': '[Error] Invalid credentials or not an admin'}, status=status.HTTP_401_UNAUTHORIZED)
 
 class CategoryViewSet(viewsets.ModelViewSet):
     """API ViewSet for Categories"""
