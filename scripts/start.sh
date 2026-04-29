@@ -8,7 +8,7 @@ python manage.py collectstatic --noinput
 
 echo "Applying database migrations..."
 python manage.py makemigrations --noinput
-python manage.py migrate --noinput
+python manage.py migrate --noinput --run-syncdb
 
 echo "Creating/Updating superuser if it does not exist..."
 python manage.py shell <<EOF
