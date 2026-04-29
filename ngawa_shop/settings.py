@@ -3,6 +3,10 @@ import os
 from pathlib import Path
 from decouple import config
 
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+ 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-dev-key-change-in-production')
@@ -19,7 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     #'cloudinary_storage',
     'django.contrib.staticfiles',
-    #'cloudinary',
+    'cloudinary',
     'rest_framework',
     'corsheaders',
     'shop',
@@ -126,3 +130,9 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
+cloudinary.config(
+    cloud_name=config('CLOUDINARY_CLOUD_NAME', default=''),
+    api_key=config('CLOUDINARY_API_KEY', default=''),
+    api_secret=config('CLOUDINARY_API_SECRET', default=''),
+    #secure=True
+)
