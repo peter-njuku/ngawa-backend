@@ -4,7 +4,7 @@
 set -e
 
 echo "Collecting static files..."
-python manage.py collectstatic --noinput
+python manage.py collectstatic 
 
 echo "Applying database migrations..."
 python manage.py makemigrations --noinput
