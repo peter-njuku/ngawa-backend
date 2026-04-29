@@ -1,1 +1,0 @@
-# Shop app init

@@ -1,39 +1,34 @@
-# Use an official Python runtime as a parent image
-FROM python:3.14-slim
+# Use official Python runtime as a parent image
+FROM python:3.11-slim
 
 # Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-ENV PORT=8000
+ENV PYTHONDONTWRITEBYTECODE=1
 
 # Set work directory
 WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    libpq-dev \
+    postgresql-client \
     gcc \
-    curl \
-    zlib1g-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
-COPY requirements.txt .
+COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project files
-COPY . .
+# Copy project
+COPY . /app/
 
-# Collect static files
-RUN python manage.py collectstatic 
+# Create a non-root user to run the app
+RUN useradd -m -u 1000 appuser && \
+    chown -R appuser:appuser /app
 
-# Make start script executable
-RUN chmod +x scripts/start.sh
+USER appuser
 
-# Expose the port the app runs on
+# Expose port
 EXPOSE 8000
 
-# Run the start script
-CMD ["/app/scripts/start.sh"]
+# Run the application
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "--timeout", "120", "ngawasolutions.wsgi:application"]
