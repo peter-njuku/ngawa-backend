@@ -41,7 +41,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     featured = models.BooleanField(default=False)
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='product_created')
+    #created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='product_created')
     
     class Meta:
         ordering = ['-created_at']
