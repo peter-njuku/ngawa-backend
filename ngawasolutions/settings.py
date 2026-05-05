@@ -17,9 +17,22 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
-if not DEBUG:
-    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')  # Replace with your actual domain
+
+def _parse_csv_env(name, default=''):
+    value = os.environ.get(name, default)
+    return [item.strip() for item in str(value).split(',') if item.strip()]
+
+
+def _normalize_allowed_host(host):
+    host = host.strip()
+    if host.startswith('http://'):
+        host = host[7:]
+    elif host.startswith('https://'):
+        host = host[8:]
+    return host.rstrip('/')
+
+
+ALLOWED_HOSTS = [_normalize_allowed_host(host) for host in _parse_csv_env('ALLOWED_HOSTS', 'localhost,127.0.0.1')]
 
 # Application definition
 INSTALLED_APPS = [
@@ -123,9 +136,9 @@ REST_FRAMEWORK = {
 }
 
 # CORS Configuration
-CORS_ALLOWED_ORIGINS = os.environ.get(
+CORS_ALLOWED_ORIGINS = _parse_csv_env(
     'CORS_ALLOWED_ORIGINS',
     'http://localhost:3000,http://127.0.0.1:3000,http://localhost:8000'
-).split(',')
+)
 
 CORS_ALLOW_CREDENTIALS = True

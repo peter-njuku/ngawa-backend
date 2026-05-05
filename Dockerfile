@@ -21,6 +21,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project
 COPY . /app/
 
+# Ensure the startup script is executable
+RUN chmod +x /app/entrypoint.sh
+
 # Create a non-root user to run the app
 RUN useradd -m -u 1000 appuser && \
     chown -R appuser:appuser /app
@@ -30,5 +33,5 @@ USER appuser
 # Expose port
 EXPOSE 8000
 
-# Run the application
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "--timeout", "120", "ngawasolutions.wsgi:application"]
+# Run the startup script to migrate, collectstatic, create admin, and start Gunicorn
+CMD ["sh", "/app/entrypoint.sh"]
