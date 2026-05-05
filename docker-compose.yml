@@ -2,7 +2,7 @@ services:
   web:
     build: .
     container_name: ngawasolutions-api
-    command: sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && python manage.py init_admin && python manage.py seed_categories && gunicorn --bind 0.0.0.0:8000 --workers 4 ngawasolutions.wsgi:application"
+    command: sh -c "python manage.py migrate && python manage.py collectstatic --noinput && python manage.py init_admin && python manage.py seed_categories && gunicorn --bind 0.0.0.0:8000 --workers 4 ngawasolutions.wsgi:application"
     ports:
       - "8000:8000"
     env_file:
