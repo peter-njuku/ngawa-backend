@@ -2,6 +2,7 @@
 Models for product and category management.
 """
 from django.db import models
+from cloudinary.models import CloudinaryField
 
 
 class Category(models.Model):
@@ -23,9 +24,9 @@ class Product(models.Model):
     """Product model linked to a category."""
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
+    image = CloudinaryField('image', blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
-    #image = 
     stock = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)

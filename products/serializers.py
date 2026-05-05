@@ -22,6 +22,8 @@ class CategorySerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     """Serializer for Product model."""
     category_name = serializers.CharField(source='category.name', read_only=True)
+    image = serializers.ImageField(required=False, allow_null=True)
+    image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
@@ -34,7 +36,12 @@ class ProductSerializer(serializers.ModelSerializer):
             'category_name',
             'stock',
             'is_active',
+            'image',
+            'image_url',
             'created_at',
             'updated_at'
         ]
-        read_only_fields = ['created_at', 'updated_at']
+        read_only_fields = ['created_at', 'updated_at', 'image_url']
+
+    def get_image_url(self, obj):
+        return obj.image.url if getattr(obj, 'image', None) else None

@@ -29,7 +29,7 @@ class ProductAdmin(admin.ModelAdmin):
     
     fieldsets = (
         ('Basic Information', {
-            'fields': ('name', 'description', 'category')
+            'fields': ('name', 'description', 'category', 'image')
         }),
         ('Pricing & Stock', {
             'fields': ('price', 'stock')
